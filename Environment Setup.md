@@ -4,7 +4,7 @@ This video is starting to show its age a bit and you should do the following thi
 - Instead of installing the Squirrel package for Sublime Text manually, you should just follow the instructions for automatic installation [here](https://packagecontrol.io/packages/Squirrel), to get the themes shown in the video, you have to manually install the [Battle Brothers Snippets package](https://github.com/Enduriel/Sublime-Text-BB-Snippets) 
 - Rather than downloading Adam's tools or creating your own mod folder manually, you should set up [Taro's BBBuilder](https://github.com/TaroEld/BBbuilder), an outstanding command line tool, by following the readme at the link. It also has support for Visual Studio Code. If you do not do this you are massively wasting your time and will struggle to follow the rest of this page.
 
-# BBbuilder
+## BBbuilder
 [Github Repository](https://github.com/TaroEld/BBbuilder)
 [Latest Release](https://github.com/TaroEld/BBbuilder/releases/latest)
 
