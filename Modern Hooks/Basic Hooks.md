@@ -1,11 +1,3 @@
-[[Hooks]] allow us to modify [[Battle Brothers Class|Battle Brothers Classes]] directly, you can imagine that this is happening during a sort of 'post complication' time, in practice this occurs while the game is booting up and reading all of the game scripts, before the main menu screen is shown. This allows us to 
-- add functions
-- wrap functions, having our code execute before, after or instead of the original code
-- add fields
-- set fields
-of any bb class, without a runtime cost due to the hook running every time an object is instantiated. These changes are also inherited by descendants as though the class was defined with them in the first place.
-
-
 ## Adding Functions
 ```squirrel
 ::Hooks.addFunctions( _modID, _scriptPath, _newFunctions )
