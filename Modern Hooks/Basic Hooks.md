@@ -67,7 +67,7 @@ If this isn't followed it is possible that two mods will add a new function with
 ```
 `_modID` is the ID of your mod, allowing for easier identification of hooks for debugging purposes.
 `_scriptPath` is the path of the file you're trying to hook
-`_newFunctions` is a table containing wrappers for the functions you're trying to wrap.
+`_functionWrappers` is a table containing wrappers for the functions you're trying to wrap.
 
 Wraps all the functions in the `_functionWrappers` table. Requires that the functions you're trying to wrap already exist, and will print warnings to log if they don't. If you're trying to add new functions you should use [[#Adding Functions|addFunctions]].
 
