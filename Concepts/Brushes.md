@@ -1,0 +1,11 @@
+As stated in [[Vanilla Files#/brushes|the brushes section of Vanilla files]], .brush files are effectively metadata for some of the larger pngs in /gfx.
+
+[[Environment Setup#BBBuilder|BBbuilder]] automatically combines this information with the relevant files in /gfx during `extract` to create a new /unpacked_brushes folder which contains folders corresponding to the .brush files. It also automatically recombines this data during `build` so to add new brushes you must follow the same structure as the extracted vanilla files.
+
+Each extracted folder in /unpacked_brushes contains a metadata.xml and a number of png files that are referenced inside of the xml file. The structure of the xml is pretty straightforward:
+
+The first and last lines are mostly just tags to organize the entire structure, and you should copy them directly in your files, with one exception, change the `name=""` tag in the first line to a unique path which will store the big png file that combines all the sprites in your mod. My recommendation would be to use something like `name="gfx/mods/my_mod_name.png"`.
+
+All the other lines in the metadata.xml are references to individual files for separate brushes. For example, let's take a look at the second brush `bust_arrow` in entity_0/metadata.xml. 
+
+This is the arrow pointing at your current character during an ingame turn, it can be referenced in game code using the id `bust_arrow` which is defined by the `id` xml tag. The path to the png to be used for the brush is set using the `img` tag, in this case we can see it references `img="entity\bust_arrow.png"`, and following this path to `/unpacked_brushes/entity_0/entity/bust_arrow.png` we can find the png used by the brush. You may have noticed the other values, other than IC they are all explained by this [excellent image](https://media.discordapp.net/attachments/549994151861682176/938412915973836851/brush_values.png?width=440&height=559) created by Poss. To the best of our current knowledge, the IC value no longer has any impact on how sprites appear so you can safely just copy it from a different sprite.
