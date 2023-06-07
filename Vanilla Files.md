@@ -16,7 +16,7 @@ This folder contains squirrel code files (.cnut when compiled, .nut when decompi
 These files are loaded first and generally contain static information used by other parts of the game.
 
 ## /ui
-Contains all the games JS, CSS and HTML files used to display UI elements to the player. This is where UI modding takes place. 
+Contains all the game's JS, CSS and HTML files used to display UI elements to the player. This is where UI modding takes place. 
 
 ## /brushes
 This folder contains .brush files which you can think of as metadata on how to cut up the big files in /gfx to have them be read by the game. These aren't human readable directly. These files are generally used when showing non-UI visual elements, a good rule of thumb is that if it can move across your screen either due to it moving as part of an animation or due to you moving your screen relative to it, it's using a brush (and is called a 'sprite'), you can think of a brush as a 'skin' for a layer (sprite) of a moving object (usually an entity).
