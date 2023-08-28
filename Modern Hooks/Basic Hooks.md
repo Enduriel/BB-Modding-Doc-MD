@@ -61,7 +61,7 @@ If this isn't followed it is possible that two mods will add a new function with
 `_scriptPath` is the path of the file you're trying to hook
 `_functionWrappers` is a table containing wrappers for the functions you're trying to wrap.
 
-Wraps all the functions in the `_functionWrappers` table. Requires that the functions you're trying to wrap already exist, and will print warnings to log if they don't. If you're trying to add new functions you should use [[#Adding Functions|addFunctions]].
+A wrapper is a function that accepts a function as its sole parameter and returns another function (usually the input function surrounded by some additional code). Wraps all the functions in the `_functionWrappers` table. Requires that the functions you're trying to wrap already exist, and will print warnings to log if they don't. If you're trying to add new functions you should use [[#Adding Functions|addFunctions]]. Each wrapper must only accept a single parameter, called `_originalFunction` and return a function. A warning will be printed to the log if the number of parameters of the original function and the function returned by the wrapper don't match, this is to help with debugging argument count mismatches early.
 
 ### Example
 If you want to add a "Hello World" to the end of the name of items, you could do this by wrapping the `getName` function in item and adding `"Hello World"` to whatever it returns. Wrapping is a bit weirder then adding functions so it's best to just following the example:

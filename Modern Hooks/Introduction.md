@@ -2,7 +2,7 @@
 Github
 NexusMods
 
-[[Hooks]] allow us to modify [[Battle Brothers Class|Battle Brothers Classes]] directly, you can imagine that this is happening during a sort of 'post complication' time, in practice this occurs while the game is booting up and reading all of the game scripts, before the main menu screen is shown. This allows us to 
+[[Hooks]] allow us to modify [[Battle Brothers Class|Battle Brothers Classes]] directly, this happens during initialization time, while the game is booting up and reading all of the game scripts and before the main menu screen is shown. This allows us to 
 - [[Basic Hooks#Adding Functions|add functions]]
 - [[Basic Hooks#Wrapping Functions|wrap functions]], having our code execute before, after or instead of the original code
 - [[Basic Hooks#Adding Fields|add fields]]
@@ -28,6 +28,10 @@ Your file in this folder should be very small and [[Best Practices#Main Mod File
 `_modName` is an end-user friendly name for your mod. This should be identifiable to the mod's end users, and will be displayed along with errors or warning detected by Modern Hooks related to your mod.
 `_metaData` allows you to store any arbitrary data with your mod objects for other mods to use.
 
-This function registers your mod with Modern Hooks, allowing your to hook [[Battle Brothers Class|BB Classes]] using your mod's ID and allowing other mods to declare incompatibility with your mod or set your mod as a requirement.
+This function registers your mod with Modern Hooks, allowing you to hook [[Battle Brothers Class|BB Classes]] using your mod's ID and allowing other mods to declare incompatibility with your mod or set your mod as a requirement.
 Returns a [[Mod Object]] which allows you to declare incompatibilities, requirements and queue your functions.
 
+### Example
+```squirrel
+local myMod = ::Hooks.register("mod_my_mod", "1.0.0", "My Cool Mod!");
+```

@@ -1,6 +1,6 @@
-[[Introduction#Registering your mod|::Hooks.register]] return an instance of Modern Hooks' Mod [Squirrel Class](https://developer.electricimp.com/squirrel/squirrel-guide/classes). This allows you to
+[[Introduction#Registering your mod|::Hooks.register]] returns an instance of Modern Hooks' Mod [Squirrel Class](https://developer.electricimp.com/squirrel/squirrel-guide/classes). This allows you to
 
-## Declaring Compatibility Data
+## Declare Compatibility Data
 ```squirrel
 <Mod>.declareCompatibilityData( _compatibilityData );
 // _compatibilityData is a table
@@ -31,7 +31,7 @@ mymod.declareCompatibilityData({
 })
 ```
 
-## Queuing a Function
+## Queue a Function
 ```squirrel
 <Mod>.queueFunction( _loadOrderData, _function, _bucket = null )
 // _loadOrderData is a table but can be null
@@ -43,3 +43,25 @@ mymod.declareCompatibilityData({
 `_bucket` is the [[Queuing#Buckets|Bucket]] you'd like your function to be queued in, defaults to `::Hooks.BucketType.Normal`
 
 This functions allows you to queue anything in `_function` relative to other mods, it is generally recommended that you queue the entirety of your mod in this way, even if you don't care about the load order of your mod, because other mods may depend on your mod in the future and wish to queue relative to it.
+
+### Example
+```squirrel
+// First register your mod
+local myMod = ::Hooks.register("mod_my_mod", "1.0.0", "My Cool Mod!");
+// then queue any other code you want to execute (hooks, registering JS files, ::includes, etc);
+myMod.queueFunction({
+	After = ["mod_msu" /*load after MSU which as it is a modding library*/]
+	Before = ["mod_ends_buyback", /*load before Buyback because we modify the way prices for items are calculated (for example)*/
+		"mod_example_mod"]
+}, function(){
+	// our actual hooks and any other code goes here
+})
+// if for some reason (for example because we are initializing classes) we want to use QueueBuckets we could do so here
+myMod.queueFunction({
+	After = ["mod_msu"] // here we only care about queueing after MSU just in case
+}, function(){
+	// here we could instantiate BB Classes like
+	local myVec = ::vec2f(0,0);
+	// because this is added to QueueBucket.AfterHooks by doing the following
+}, ::Hooks.QueueBucket.AfterHooks);
+```

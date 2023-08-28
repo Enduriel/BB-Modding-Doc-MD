@@ -8,7 +8,9 @@ This video is starting to show its age a bit and you should do the following thi
 [Github Repository](https://github.com/TaroEld/BBbuilder)
 [Latest Release](https://github.com/TaroEld/BBbuilder/releases/latest)
 
-Before beginning modding, I would strongly recommend downloading BBBuilding, creating a mod folder and setting up BBBuilder using 
+BBbuilder's GitHub documentation is lacking, but its commands are described very well internally, run `.\BBbuilder.exe` without any additional arguments to get a good breakdown of the functions.
+
+Before beginning modding, I would strongly recommend downloading BBbuilder, creating a mod folder and setting up BBbuilder using 
 ```powershell
 .\BBbuilder.exe config datapath "path/to/battlebrothers/data"
 .\BBbuilder.exe config modpath "path/to/folder/for/your/wip/mods"
