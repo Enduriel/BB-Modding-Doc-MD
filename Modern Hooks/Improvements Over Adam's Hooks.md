@@ -15,6 +15,7 @@ All of the 'raw' hooks in modding script hooks have been turned into a *single* 
 - `::mod_hookNewObject`
 - `::mod_hookNewObjectOnce`
 - `::mod_hookBaseClass`
+
 we now only have [[Raw Hooks|::Hooks.rawHook]], which is actually a drop in replacement for `::mod_hookExactClass` (and actually patches hookExactClass to redirect to `::Hooks.rawHook`), except it is able to apply to ALL Battle Brothers Classes, with no exceptions. However, we should instead use 
 
 ### Hooking Descendants
@@ -62,6 +63,7 @@ Instead of using raw style hooks, when using Modern Hooks you should instead be 
 - Warn if a mod wraps a function with a different number of parameters than the function the wrapper returns.
 - Fix a very prevalent bug when wrapping functions of grandparents of the target class. [Discord Thread](https://discord.com/channels/965324395851694140/1052648104815513670) on the subject (credit to LordMidas for discovering it) in the [Modding Discord](https://discord.gg/HFrdY9aGBk)
 - Will likely have additional features added to them to help with finding mod conflicts and other issues.
+
 There are 4 normal types and 4 equivalent 'leaf' types, with no overlap between them, and the use-case for each should be fairly clear:
 - `addNewFunctions` add functions to the target class
 	- `addNewLeafFunctions` exists, though I don't really see a use-case
@@ -88,6 +90,7 @@ Dependencies and queuing were an addon to Adam's hooks and therefore the impleme
 - It is impossible to require another mod and queue before it (though MSU does patch this out)
 - You can split up your mod requirements across multiple queued functions and they all apply.
 - It is impossible to queue one part of your mod before a mod and a different part after.
+
 In Modern Hooks, [[Requirements and Incompatibilities]] are handled separately from mod queueing, which makes a lot more logical sense. Additionally it's also possible to add the name (not just the ID) of the mod you depend on so that users get a more user-friendly error message.
 
 ### Queueing
