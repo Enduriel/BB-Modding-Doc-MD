@@ -17,10 +17,9 @@ The basic idea around raw hooks is very simple, you register a function that you
 ```
 An identically structured function exists for the leaf variant of raw hooks, which is used by all leaf hooks.
 ```squirrel
-::Hooks.rawLeafHook("mod_my_cool_mod", "scripts/items/item", function(_prototype)
-	{
-		// I will execute once for each item
-		// and each time _prototype will be the BB Class
-		// for the item being hooked
-	});
+::Hooks.rawLeafHook("mod_my_cool_mod", "scripts/items/item", function(_prototype) {
+	// this will execute once for each item
+	// and each time _prototype will be the BB Class
+	// for the item being hooked
+});
 ```

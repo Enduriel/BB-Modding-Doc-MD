@@ -8,7 +8,7 @@
 `_scriptPath` is the path of the file you're trying to hook
 `_newFunctions` is a table of all the functions you want to add to the class
 
-Adds a table of functions to the class with the given `_scriptPath`. Requires that the functions you're trying to add are actually new, it will print warnings to log if they're not. If you're trying to overwrite an already existing function you should use [[#Wrapping Functions|wrapFunctions]].
+Adds a table of functions to the [[Battle Brothers Class]] with the given `_scriptPath`. Requires that the functions you're trying to add are actually new, it will print warnings to log if they're not. If you're trying to overwrite an already existing function you should use [[#Wrapping Functions|wrapFunctions]].
 
 ### Example
 If you want to add a new `foo` function to all items, you could do this using modern hooks
