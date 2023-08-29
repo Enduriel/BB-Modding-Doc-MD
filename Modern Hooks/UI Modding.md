@@ -15,6 +15,14 @@ If we have a file `ui/mods/mod_example_mod/my_new_screen.js`, as we are followin
 ::Hooks.registerJS("ui/mods/mod_example_mod/my_new_screen.js");
 ```
 
+## registerLateJS
+```squirrel
+::Hooks.registerLateJS( _filePath )
+// _filePath is a string
+```
+`_filePath` is the full string path of wherever the UI file you'd like to load is, due to engine limitations, this must always begin with `ui/`.
+
+Adds a [JavaScript](https://developer.mozilla.org/en-US/docs/Learn/JavaScript) file at the specified `_filePath` to be loaded during game initialization, but only after vanilla screens are already instantiated.
 ## registerCSS
 ```squirrel
 ::Hooks.registerCSS( _filePath )
