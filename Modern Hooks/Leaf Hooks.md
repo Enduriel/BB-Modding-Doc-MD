@@ -6,6 +6,7 @@ Fortunately, due to the fact that inheritance *clones* the parent prototype obje
 
 To use this 'leaf hook' system, each of the hooking functions has a leaf style counterpart:
 - wrapLeafFunctions
+- wrapNativeEntityLeafFunctions
 - addLeafFunctions
 - setLeafFields
 - addLeafFields

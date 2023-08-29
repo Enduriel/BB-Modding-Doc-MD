@@ -97,7 +97,34 @@ Just like with `addFunctions` if you'd like to wrap multiple functions at a time
 });
 ```
 
+## Wrapping Native Entity Functions
+Some functions are added by C++ when instantiating the object using specific functions. This seems to only apply to certain functions in descendants of `scripts/entity/world/world_entity` and `scripts/entity/tactical/entity`. Since these functions do not exist in the prototype [[Battle Brothers Class]], they cannot be hooked with normal hooks. Instead, as described [[Battle Brothers Class#Instantiation|here]], we are able to hook the onInit function to then perform our hooks on those native functions, since at they point they are guaranteed to be present. The following abstracts all of that away and simply gives you a separate `wrapNativeEntityFunctions` to be used in place of `wrapFunctions`.
+```squirrel
+::Hooks.wrapNativeEntityFunctions( _modID, _scriptPath, _functionWrappers )
+// _modID and _scriptPath are strings
+// _functionWrappers is a table
+```
+`_modID` is the ID of your mod, allowing for easier identification of hooks for debugging purposes.
+`_scriptPath` is the path of the file you're trying to hook
+`_functionWrappers` is a table containing wrappers for the functions you're trying to wrap.
 
+A wrapper is a function that accepts a function as its sole parameter and returns another function (usually the input function surrounded by some additional code). Wraps all the functions in the `_functionWrappers` table. Requires that the functions you're trying to wrap already exist, and will print warnings to log if they don't. If you're trying to add new functions you should use [[#Adding Functions|addFunctions]]. Each wrapper must only accept a single parameter, called `_originalFunction` and return a function. A warning will be printed to the log if the number of parameters of the original function and the function returned by the wrapper don't match, this is to help with debugging argument count mismatches early.
+
+### Example
+```squirrel
+::Hooks.wrapNativeEntityFunctions("mod_my_cool_mod", "scripts/entity/tactical/player", {
+	function addSprite( _originalFunction ) // only use this for functions that aren't defined in the BB Class
+	{
+		return function( _spriteName ) { // I would actually recommend using ... here because we can't be certain how many args the native functions accept
+			::logInfo("addSprite was called!");
+			return _originalFunction(_spriteName);
+			// if you used ... instead of _spriteName you would comment the above line and uncomment the below 2
+			// vargv.insert(0, this);
+			// return _originalFunction.acall(vargv);
+		}
+	}
+})
+```
 ## Adding Fields
 ```squirrel
 ::Hooks.addFields( _modID, _scriptPath, _fieldsToAdd )
