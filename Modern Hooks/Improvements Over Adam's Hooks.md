@@ -16,7 +16,7 @@ All of the 'raw' hooks in modding script hooks have been turned into a *single* 
 - `::mod_hookNewObjectOnce`
 - `::mod_hookBaseClass`
 
-we now only have [[Raw Hooks|::Hooks.rawHook]], which is actually a drop in replacement for `::mod_hookExactClass` (and actually patches hookExactClass to redirect to `::Hooks.rawHook`), except it is able to apply to ALL Battle Brothers Classes, with no exceptions. However, we should instead use 
+we now only have [[Raw Hooks|::Hooks.rawHook]], which is actually a drop in replacement for `::mod_hookExactClass` (and actually patches hookExactClass to redirect to `::Hooks.rawHook`), except it is able to apply to ALL Battle Brothers Classes, with no exceptions. However, we should instead use the new [[#New Basic Hooks|basic hooks]].
 
 ### Hooking Descendants
 ***IMPORTANT NOTE***
