@@ -155,6 +155,7 @@ A small modern mod_hooks mod might look something like
 			return onUpdateProperties(_properties);
 		}
 	});
+});
 ```
 
 The equivalent modern hooks mod would look something like
