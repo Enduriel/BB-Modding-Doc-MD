@@ -1,6 +1,4 @@
-Adam's creation of [modding script hooks](https://www.nexusmods.com/battlebrothers/mods/42) revolutionized Battle Brothers modding. Before it existed we were unable to mod Battle Brothers except by overwriting files or changes configs. Unfortunately, after years of using and relying on it for all of my mods, I've noticed a lot of ways in which it catches out new and experienced modders alike, causing them to write potentially buggy code and find it difficult to understand exactly what they're doing.  
-  
-The MSU team had been bouncing around the idea of MSU hooks for a while but we weren't able to cleanly overcome one specific issue (a standard way to hook ALL classes with 1 hook) until I discovered a method to do so in May. With Midas and Taro mostly unavailable I took on the challenge of writing everything up myself.
+Adam's creation of [modding script hooks](https://www.nexusmods.com/battlebrothers/mods/42) revolutionized Battle Brothers modding. Before it existed we were unable to mod Battle Brothers except by overwriting files or changing configs. Unfortunately, after years of using and relying on it for all of my mods, I've noticed a lot of ways in which it catches out new and experienced modders alike, causing them to write potentially buggy code and find it difficult to understand exactly what they're doing. Modern Hooks came about as a way to simplify, optimize and extend the features of a hooking system to mod Battle Brothers.
 
 ## Squirrel Hooks
 
