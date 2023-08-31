@@ -94,11 +94,125 @@ Dependencies and queuing were an addon to Adam's hooks and therefore the impleme
 In Modern Hooks, [[Requirements and Incompatibilities]] are handled separately from mod queueing, which makes a lot more logical sense. Additionally it's also possible to add the name (not just the ID) of the mod you depend on so that users get a more user-friendly error message.
 
 ### Queueing
-
 #### Function focused Queuing algorithm
 Modern Hooks uses a new queueing algorithm which allows it to handle situations like queuing two separate parts of your mod at different positions relative to another mod. For example, you could queue one part of your mod before MSU, and another after. This isn't possible with Adam's Hooks.
 #### Queue Buckets
-[[Queuing#Buckets|Buckets]] are a new concept allowing specialized mods to queue certain functions earlier or later than all other mods. This is mostly useful for Modern Hooks itself, modding libraries like MSU, and larger mods like Legends or Reforged. MSU for example had its own [endqueue system](https://github.com/MSUTeam/MSU/blob/49177ceb4ce3dca8ece18f48d39e66c3c383896b/scripts/!mods_preload/msu.nut) to try and force certain hooks to run after the normal queueing system. Additionally...
-
+[[Queuing#Buckets|Buckets]] are a new concept allowing specialized mods to queue certain functions earlier or later than all other mods. This is mostly useful for Modern Hooks itself, modding libraries like MSU, and larger mods like Legends or Reforged. MSU for example had its own [endqueue system](https://github.com/MSUTeam/MSU/blob/49177ceb4ce3dca8ece18f48d39e66c3c383896b/scripts/!mods_preload/msu.nut) to try and force certain hooks to run after the normal queueing system.
 #### AfterHooks
-The [[Queuing#AfterHooks|AfterHooks QueueBucket]] allows you to queue code to run after all hooks have completed, this is important as you should not be instantiating squirrel or native objects before all hooks and normal functions have run, as if you do they will fail. This bucket allows you to easily do that.x`
+The [[Queuing#AfterHooks|AfterHooks QueueBucket]] allows you to queue code to run after all hooks have completed, this is important as you should not be instantiating squirrel or native objects before all hooks and normal functions have run, as if you do they will fail. This bucket allows you to easily do that.
+
+## Migration Example
+A small modern mod_hooks mod might look something like
+```squirrel
+::MyMod <- {
+	ID = "mod_my_mod",
+	Name = "My Mod",
+	Version = "1.0.0" // Assuming MSU is required and loaded
+};
+::mods_register(::MyMod.ID, ::MyMod.Name, ::MyMod.Version);
+::mods_queue(::MyMod.ID, "mod_msu(>=1.0.0), !mod_legends", function() {
+	::mods_hookNewObject("ui/global/data_helper", function(o){
+		// add a function foo that returns foo
+		o.foo <- function() {
+			return "foo";
+		}
+		// print addFlagsToUIData to log whenever addFlagsToUIData is called
+		local addFlagsToUIData = o.addFlagsToUIData; 
+		o.addFlagsToUIData = function(_entity, _activeEntity, _target) {
+			::logInfo("addFlagsToUIData");
+			return addFlagsToUIData(_entity, _activeEntity, _target);
+		}
+	});
+	::mods_hookDescendants("items/item", function(o){
+		// double the buy price of items
+		// the below code wouldn't work as expected and would have a variety of issues,
+		// but the full version is really convoluted so lets pretend that just
+		// doubles the buy price of items
+		local getBuyPrice = ::mods_getMember(o, "getBuyPrice"); 
+		o.getBuyPrice <- function()
+		{
+			return getBuyPrice() * 2; 
+		}
+	})
+	::mods_hookExactClass("items/weapons/named/named_shamshir", function(o) {
+		// this complicated mess is to avoid the issues around hooking functions that
+		// only exist in grandparents or further from the target
+		// read more on the Battle Brothers Modding Discord
+		// https://discord.com/channels/965324395851694140/1052648104815513670
+		local onUpdateProperties = "onUpdateProperties" in o ? o.onUpdateProperties : null;
+		local parentName = o.SuperName;
+		o.onUpdateProperties <- function( _properties )
+		{
+			_properties.Stamina += 10;
+			if (onUpdateProperties != null)
+				onUpdateProperties(_properties);
+			else
+				this[parentName].onUpdateProperties(_properties);
+		}
+		// if you didn't perform the validation required to make this not cause issues it would instead look like
+		local onUpdateProperties = ::mods_getMember(o, "onUpdateProperties");
+		o.onUpdateProperties <- function(_properties)
+		{
+			_properties.Stamina += 10;
+			return onUpdateProperties(_properties);
+		}
+	});
+```
+
+The equivalent modern hooks mod would look something like
+```squirrel
+::MyMod <- {
+	ID = "mod_my_mod",
+	Name = "My Mod",
+	Version = "1.0.0" // SemVer no longer requires MSU
+};
+
+local mod = ::Hooks.register(::MyMod.ID, ::MyMod.Name, ::MyMod.Version);
+mod.declareCompatibilityData({ // declare compatibility information first
+	Requirements = {
+		mod_msu = {Version = ">=1.0.0"}
+	},
+	Incompatibilities = {
+		mod_legends = {}
+	}
+});
+// then queue functions separately
+mod.queueFunction({
+	After = ["mod_msu"],
+	Before = ["mod_swifter"]
+},function(){
+	::Hooks.addFunctions(::MyMod.ID, "scripts/ui/global/data_helper", {
+		function foo()
+		{
+			return "foo";
+		}
+	});
+	::Hooks.wrapFunctions(::MyMod.ID, "scripts/ui/global/data_helper", {
+		function addFlagsToUIData( _originalFunction )
+		{
+			return function( _entity, _activeEntity, _target ) {
+				::logInfo("addFlagsToUIData");
+				return _originalFunction(_entity, _activeEntity, _target)
+			}
+		}
+	});
+	::Hooks.wrapLeafFunctions(::MyMod.ID, "scripts/items/item", {
+		function getBuyPrice( _originalFunction )
+		{
+			return function() {
+				return _originalFunction() * 2;
+			}
+		}
+	});
+	::Hooks.wrapFunctions(::MyMod.ID, "scripts/items/weapons/named/named_shamshir", {
+		function onUpdateProperties( _originalFunction )
+		{
+			return function( _properties ) {
+				_properties.Stamina += 10;
+				return _originalFunction(_properties);
+			}
+		}
+	})
+});
+```
+Overall, from the example you should be able to see that while it may be longer, the new code is simpler, with less ambiguity and possibility for different naming schemes or conventions, without even discussing the hidden problems it solves for you and the additional features Modern Hooks provides.
