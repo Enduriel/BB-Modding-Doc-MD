@@ -73,18 +73,26 @@ It should then register with [[Introduction|Modern Hooks]] (or [modding script h
 	Version = "1.0.1-beta.1"
 }
 
-::Hooks.registerMod(::MyCoolMod.ID, ::MyCoolMod.Name, ::MyCoolMod.Version)
-	.require("mod_i_need").minVersion("1.14.4")
-	.incompatibleWith("mod_that_breaks_on_specific_version").version("1.4.0")
-	.require("mod_i_need_and_want_to_load_before").LoadBefore().minVersion("1.14.4")
-	.loadAfter("mod_i_want_to_load_after")
-	.queueFunction(function(){
-		::MyCoolMod.Mod <- ::MSU.Class.Mod(::MyCoolMod.ID, ::MyCoolMod.Version, ::MyCoolMod.Name) // registering with MSU
-		::include("mod_my_cool_mod/load"); // running loading script in main folder
-		
-		::Hooks.registerJS("ui/mods/my_cool_mod/my_screen.js"); // registering JS file
-		::Hooks.registerCSS("ui/mods/my_cool_mod/css/my_css.css"); // registering CSS file
-	});
+local mod = ::Hooks.register(::MyCoolMod.ID, ::MyCoolMod.Name, ::MyCoolMod.Version);
+
+mod.declareCompatibilityData({
+	Requirements = {
+		mod_i_need = {Version = ">=1.14.4"},
+		mod_i_need_and_want_to_load_before = {}
+	},
+	Incompatibilities = {
+		mod_that_breaks_on_specific_version = {Version = "1.4.0"}
+	}
+});
+mod.queueFunction({
+	Before = ["mod_i_need_and_want_to_load_before"],
+	After = ["mod_i_want_to_load_after"]
+}, function() {
+	::MyCoolMod.Mod <- ::MSU.Class.Mod(::MyCoolMod.ID, ::MyCoolMod.Version, ::MyCoolMod.Name) // registering with MSU
+	::include("mod_my_cool_mod/load"); // running loading script in main folder
+	::Hooks.registerJS("ui/mods/my_cool_mod/my_screen.js"); // registering JS file
+	::Hooks.registerCSS("ui/mods/my_cool_mod/css/my_css.css"); // registering CSS file
+});
 ```
 
 ## New Class Fields
