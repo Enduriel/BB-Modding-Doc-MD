@@ -10,14 +10,14 @@ to calculate the ceiling and floor for the chance to hit. So, if we were to repl
 	q.attackEntity @(__original) function( _user, _targetEntity, _allowDiversion = true )
 	{
 		local max = ::Math.max; // store the original function locally
-			::Math.max = function (_a, _b) { // replace with our wrapper
-				if (_a == 5) // if the first parameter is 5, we increase it to 10
-					_a = 10;
-				return max(_a, _b); // return the original result
-			}
-			local ret = _originalFunction( _user, _targetEntity, _allowDiversion); // run the function we are hooking
-			::Math.max = max; // restore the original function
-			return ret; // technically unnecessary in this case but is easy to forget in other situations
+		::Math.max = function (_a, _b) { // replace with our wrapper
+			if (_a == 5) // if the first parameter is 5, we increase it to 10
+				_a = 10;
+			return max(_a, _b); // return the original result
+		}
+		local ret = _originalFunction( _user, _targetEntity, _allowDiversion); // run the function we are hooking
+		::Math.max = max; // restore the original function
+		return ret; // technically unnecessary in this case but is easy to forget in other situations
 	}
 });
 ```
