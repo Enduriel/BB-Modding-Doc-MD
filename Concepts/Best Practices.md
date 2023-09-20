@@ -74,25 +74,15 @@ It should then register with [[Introduction|Modern Hooks]] (or [modding script h
 }
 
 local mod = ::Hooks.register(::MyCoolMod.ID, ::MyCoolMod.Name, ::MyCoolMod.Version);
+mod.require("mod_i_need >= 1.14.4", "mod_i_need_and_want_to_load_before");
+mod.conflictWith("mod_that_breaks_on_specific_version = 1.4.0");
 
-mod.declareCompatibilityData({
-	Requirements = {
-		mod_i_need = {Version = ">=1.14.4"},
-		mod_i_need_and_want_to_load_before = {}
-	},
-	Incompatibilities = {
-		mod_that_breaks_on_specific_version = {Version = "1.4.0"}
-	}
-});
-mod.queueFunction({
-	Before = ["mod_i_need_and_want_to_load_before"],
-	After = ["mod_i_want_to_load_after"]
-}, function() {
-	::MyCoolMod.Mod <- ::MSU.Class.Mod(::MyCoolMod.ID, ::MyCoolMod.Version, ::MyCoolMod.Name) // registering with MSU
+mod.queue("<mod_i_need_and_want_to_load_before", ">mod_i_want_to_load_after", function() {
+	:MyCoolMod.Mod <- ::MSU.Class.Mod(::MyCoolMod.ID, ::MyCoolMod.Version, ::MyCoolMod.Name); // registering with MSU
 	::include("mod_my_cool_mod/load"); // running loading script in main folder
 	::Hooks.registerJS("ui/mods/my_cool_mod/my_screen.js"); // registering JS file
 	::Hooks.registerCSS("ui/mods/my_cool_mod/css/my_css.css"); // registering CSS file
-});
+})
 ```
 
 ## New Class Fields
