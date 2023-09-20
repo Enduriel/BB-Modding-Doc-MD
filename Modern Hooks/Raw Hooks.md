@@ -3,12 +3,12 @@ Modern hooks allows experienced modders to directly modify the [[Battle Brothers
 ## Example
 The basic idea around raw hooks is very simple, you register a function that you'd like to be called when a specific prototype object is processed, and then your function is executed with the prototype as the sole passed argument.
 ```squirrel
-::Hooks.rawHook("mod_my_cool_mod", "scripts/items/item", function(_prototype) {
-	// _prototype here is the prototype BB Class
+::Hooks.rawHook("mod_my_cool_mod", "scripts/items/item", function(p) {
+	// p here is the prototype BB Class
 	// we can set the default value for a field
-	_prototype.m.Name = "ERROR UNSET NAME";
+	p.m.Name = "ERROR UNSET NAME";
 	// add a function
-	_prototype.MyCoolMod_foo <- function()
+	p.MyCoolMod_foo <- function()
 	{
 		::logInfo("Hello World!");
 	}
@@ -17,9 +17,9 @@ The basic idea around raw hooks is very simple, you register a function that you
 ```
 An identically structured function exists for the leaf variant of raw hooks, which is used by all leaf hooks.
 ```squirrel
-::Hooks.rawLeafHook("mod_my_cool_mod", "scripts/items/item", function(_prototype) {
+::Hooks.rawLeafHook("mod_my_cool_mod", "scripts/items/item", function(p) {
 	// this will execute once for each item
-	// and each time _prototype will be the BB Class
+	// and each time p will be the BB Class
 	// for the item being hooked
 });
 ```

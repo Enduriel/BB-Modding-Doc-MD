@@ -10,7 +10,7 @@ After reading [[Concepts/UI Modding|UI Modding]], you may be interested in using
 Adds a [JavaScript](https://developer.mozilla.org/en-US/docs/Learn/JavaScript) file at the specified `_filePath` to be loaded during game initialization.
 
 ### Example
-If we have a file `ui/mods/mod_example_mod/my_new_screen.js`, as we are following [[Best Practices#JS/CSS Files|best practices]] for organizing JS files, we could include it by simply doing the following in our [[Queueing|queued function]]:
+If we have a file `ui/mods/mod_example_mod/my_new_screen.js`, as we are following [[Best Practices#JS/CSS Files|best practices]] for organizing JS files, we could include it by simply doing the following in our [[Queuing|queued function]]:
 ```squirrel
 ::Hooks.registerJS("ui/mods/mod_example_mod/my_new_screen.js");
 ```
@@ -32,10 +32,11 @@ Adds a [JavaScript](https://developer.mozilla.org/en-US/docs/Learn/JavaScript) f
 
 Adds a [CSS](https://developer.mozilla.org/en-US/docs/Learn/CSS) file at the specified `_filePath` to be loaded during game initialization.
 ### Example
-If we have a file `ui/mods/mod_example_mod/css/my_css.css`, as we are following [[Best Practices#JS/CSS Files|best practices]] for organizing CSS files, we could include it by simply doing the following in our [[Queueing|queued function]]:
+If we have a file `ui/mods/mod_example_mod/css/my_css.css`, as we are following [[Best Practices#JS/CSS Files|best practices]] for organizing CSS files, we could include it by simply doing the following in our [[Queuing|queued function]]:
 ```squirrel
 ::Hooks.registerCSS("ui/mods/mod_example_mod/css/my_css.css");
 ```
+
 
 ## Note for Veteran Modders
 Modern Hooks' `::Hooks.registerJS`/`::Hooks.registerCSS` function are very similar to Modding Script Hooks' `::mods_registerJS`/`::mods_registerCSS` functions, but they are not directly transferable.

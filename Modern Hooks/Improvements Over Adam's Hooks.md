@@ -14,14 +14,14 @@ All of the 'raw' hooks in modding script hooks have been turned into a *single* 
 - `::mod_hookNewObjectOnce`
 - `::mod_hookBaseClass`
 
-we now only have [[Raw Hooks|::Hooks.rawHook]], which is actually a drop in replacement for `::mod_hookExactClass` (and actually patches hookExactClass to redirect to `::Hooks.rawHook`), except it is able to apply to ALL Battle Brothers Classes, with no exceptions. However, we should instead use the new [[#New Basic Hooks|basic hooks]].
+we now only have [[Raw Hooks|<Mod>.rawHook]], which is actually a drop in replacement for `::mod_hookExactClass` (and actually patches hookExactClass to redirect to `<Mod>.rawHook`), except it is able to apply to ALL Battle Brothers Classes, with no exceptions. However, we should instead use the new [[Basic Hooks|<Mod>.hook]] as it performs additional error validation and fixes a serious bug in the other hooks.
 
 ### Hooking Descendants
 ***IMPORTANT NOTE***
 ```
 This is an example only you shouldn't use Modern Hooks like this, refer to the section on the new Basic Hooks below
 ```
-Additionally, `mod_hookDescendants` is superseded by [[Raw Hooks|Hooks.rawLeafHook]]. The distinction is easiest to explain with an example. Let's hook `scripts/items/item` to add a new function `foo` to it which prints `foo` to the log, then let's use hooDescendants to wrap that call and print `bar`.
+Additionally, `mod_hookDescendants` is superseded by [[Raw Hooks|<Mod>.rawLeafHook]]. The distinction is easiest to explain with an example. Let's hook `scripts/items/item` to add a new function `foo` to it which prints `foo` to the log, then let's use hooDescendants to wrap that call and print `bar`.
 ```squirrel
 ::mods_hookBaseClass("items/item", function(o) {
 	o.foo <- function() {
@@ -39,12 +39,12 @@ Additionally, `mod_hookDescendants` is superseded by [[Raw Hooks|Hooks.rawLeafHo
 Now, how many items would `bar` print to the log if you called `foo()` on a given item? In the example above it will print once for every layer of inheritance between `scripts/items/item` and the item you are calling `foo()` on. For example, for `scripts/items/weapons/weapon` `bar` would print once, for `scripts/items/weapons/sword` it would print twice. If you instantiated `scripts/items/item` and called `foo()` on it, `bar` would never print to the log. This is confusing, usually drains performance, and in my experience has never once been a useful feature, in comparison `::Hooks.rawLeafHook` prints would print `bar` exactly once for any descendant of item and item itself. Here is the same code using modern hooks:
 ```squirrel
 // this is an example only you should almost never be using raw hooks in modern hooks
-::Hooks.rawHook("mod_my_mod", "scripts/items/item", function(p){
+<Mod>.rawHook("scripts/items/item", function(p){
 	p.foo <- function() {
 		::logInfo("foo");
 	}
 });
-::Hooks.rawLeafHook("mod_my_mod", "scripts/items/item", function(p){
+<Mod>.rawLeafHook("scripts/items/item", function(p){
 	local foo = p.foo;
 	p.foo = function() {
 		foo();
@@ -62,16 +62,6 @@ Instead of using raw style hooks, when using Modern Hooks you should instead be 
 - Fix a very prevalent bug when wrapping functions of grandparents of the target class. [Discord Thread](https://discord.com/channels/965324395851694140/1052648104815513670) on the subject (credit to LordMidas for discovering it) in the [Modding Discord](https://discord.gg/HFrdY9aGBk)
 - Will likely have additional features added to them to help with finding mod conflicts and other issues.
 
-There are 4 normal types and 4 equivalent 'leaf' types, with no overlap between them, and the use-case for each should be fairly clear:
-- `addNewFunctions` add functions to the target class
-	- `addNewLeafFunctions` exists, though I don't really see a use-case
-- `wrapFunctions` wrap existing functions
-	- `wrapLeafFunctions` wrap existing functions for all descendants and the target class
-- `addFields` add fields to the target class
-	- `addLeafFields` exists, though I don't really see a use-case,
-- `setFields` set existing fields in the target class to a new default in the target class.
-	- `setLeafFields` set existing fields to a new default for all descendants and the target class.
-
 ## UI/JavaScript
 
 ### EarlyJS
@@ -79,7 +69,7 @@ Adam's Hooks run the JS files registed with it very late, only after ingame scre
 
 Modern Hooks instead run [[Modern Hooks/UI Modding#registerJS|registered JS]] and [[Modern Hooks/UI Modding#registerCSS|CSS]] files after all the vanilla files are read and screens are defined, but *before* screens are instantiated. This means that it is possible to hook all functions normally, and even the screens themselves directly. In some edge cases you might still want to run JS code after screens are instantiated, in which case Modern Hooks provides [[Modern Hooks/UI Modding#registerLateJS|registerLateJS]] to achieve that goal.
 
-## Dependencies and Queueing
+## Dependencies and Queuing
 
 ### Semantic Versions
 Modern hooks adds support for (and in fact requires) [semantic versions](https://semver.org). Previously, MSU was patching Adam's Hooks to add support for it, now you can use semver even in small mods that don't require MSU.
@@ -89,15 +79,17 @@ Dependencies and queuing were an addon to Adam's hooks and therefore the impleme
 - You can split up your mod requirements across multiple queued functions and they all apply.
 - It is impossible to queue one part of your mod before a mod and a different part after.
 
-In Modern Hooks, [[Requirements and Incompatibilities]] are handled separately from mod queueing, which makes a lot more logical sense. Additionally it's also possible to add the name (not just the ID) of the mod you depend on so that users get a more user-friendly error message.
+In Modern Hooks, [[Mod Object#Requirement and Incompatibilities|Requirements and Incompatibilities]] are handled separately from mod queuing, which makes a lot more logical sense. Additionally it's also possible to add the name (not just the ID) of the mod you depend on so that users get a more user-friendly error message.
 
-### Queueing
+### Queuing
 #### Function focused Queuing algorithm
-Modern Hooks uses a new queueing algorithm which allows it to handle situations like queuing two separate parts of your mod at different positions relative to another mod. For example, you could queue one part of your mod before MSU, and another after. This isn't possible with Adam's Hooks.
+Modern Hooks uses a new queuing algorithm which allows it to handle situations like queuing two separate parts of your mod at different positions relative to another mod. For example, you could queue one part of your mod before MSU, and another after. This isn't possible with Adam's Hooks.
 #### Queue Buckets
-[[Queuing#Buckets|Buckets]] are a new concept allowing specialized mods to queue certain functions earlier or later than all other mods. This is mostly useful for Modern Hooks itself, modding libraries like MSU, and larger mods like Legends or Reforged. MSU for example had its own [endqueue system](https://github.com/MSUTeam/MSU/blob/49177ceb4ce3dca8ece18f48d39e66c3c383896b/scripts/!mods_preload/msu.nut) to try and force certain hooks to run after the normal queueing system.
+[[Queuing#Buckets|Buckets]] are a new concept allowing specialized mods to queue certain functions earlier or later than all other mods. This is mostly useful for Modern Hooks itself, modding libraries like MSU, and larger mods like Legends or Reforged. MSU for example had its own [endqueue system](https://github.com/MSUTeam/MSU/blob/49177ceb4ce3dca8ece18f48d39e66c3c383896b/scripts/!mods_preload/msu.nut) to try and force certain hooks to run after the normal queuing system.
 #### AfterHooks
 The [[Queuing#AfterHooks|AfterHooks QueueBucket]] allows you to queue code to run after all hooks have completed, this is important as you should not be instantiating squirrel or native objects before all hooks and normal functions have run, as if you do they will fail. This bucket allows you to easily do that.
+#### FirstWorldInit
+TODO
 
 ## Migration Example
 A small modern mod_hooks mod might look something like
@@ -111,12 +103,14 @@ A small modern mod_hooks mod might look something like
 ::mods_queue(::MyMod.ID, "mod_msu(>=1.0.0), !mod_legends", function() {
 	::mods_hookNewObject("ui/global/data_helper", function(o){
 		// add a function foo that returns foo
-		o.foo <- function() {
+		o.foo <- function()
+		{
 			return "foo";
 		}
 		// print addFlagsToUIData to log whenever addFlagsToUIData is called
 		local addFlagsToUIData = o.addFlagsToUIData; 
-		o.addFlagsToUIData = function(_entity, _activeEntity, _target) {
+		o.addFlagsToUIData = function(_entity, _activeEntity, _target)
+		{
 			::logInfo("addFlagsToUIData");
 			return addFlagsToUIData(_entity, _activeEntity, _target);
 		}
@@ -167,51 +161,34 @@ The equivalent modern hooks mod would look something like
 };
 
 local mod = ::Hooks.register(::MyMod.ID, ::MyMod.Name, ::MyMod.Version);
-mod.declareCompatibilityData({ // declare compatibility information first
-	Requirements = {
-		mod_msu = {Version = ">=1.0.0"}
-	},
-	Incompatibilities = {
-		mod_legends = {}
-	}
-});
-// then queue functions separately
-mod.queueFunction({
-	After = ["mod_msu"],
-	Before = ["mod_swifter"]
-},function(){
-	::Hooks.addFunctions(::MyMod.ID, "scripts/ui/global/data_helper", {
-		function foo()
+mod.require("mod_msu >= 1.0.0");
+mod.incompatibleWith("mod_legends");
+
+mod.queue(">mod_msu", "<mod_swifter", function(){
+	mod.hook("scripts/ui/global/data_helper", function(q) {
+		q.foo <- function()
 		{
 			return "foo";
 		}
-	});
-	::Hooks.wrapFunctions(::MyMod.ID, "scripts/ui/global/data_helper", {
-		function addFlagsToUIData( _originalFunction )
+
+		q.addFlagsToUIData = @(__original) function( _entity, _activeEntity, _target )
 		{
-			return function( _entity, _activeEntity, _target ) {
-				::logInfo("addFlagsToUIData");
-				return _originalFunction(_entity, _activeEntity, _target)
-			}
+			::logInfo("addFlagsToUIData");
+			return _originalFunction(_entity, _activeEntity, _target);
 		}
 	});
-	::Hooks.wrapLeafFunctions(::MyMod.ID, "scripts/items/item", {
-		function getBuyPrice( _originalFunction )
+	mod.leafHook("scripts/items/item", function(q){
+		q.getBuyPrice = @(__original) function()
 		{
-			return function() {
-				return _originalFunction() * 2;
-			}
+			return __original() * 2;
 		}
 	});
-	::Hooks.wrapFunctions(::MyMod.ID, "scripts/items/weapons/named/named_shamshir", {
-		function onUpdateProperties( _originalFunction )
+	mod.hook("scripts/items/weapons/named/named_shamshir", function(q){
+		q.onUpdateProperties = @(__original) function( _properties )
 		{
-			return function( _properties ) {
-				_properties.Stamina += 10;
-				return _originalFunction(_properties);
-			}
+			_properties.Stamina += 10;
+			return __original(_properties);
 		}
-	})
+	});
 });
 ```
-Overall, from the example you should be able to see that while it may be longer, the new code is simpler, with less ambiguity and possibility for different naming schemes or conventions, without even discussing the hidden problems it solves for you and the additional features Modern Hooks provides.

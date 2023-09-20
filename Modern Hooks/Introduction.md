@@ -15,7 +15,7 @@ This method of modding is superior to [[Replacing Files|replacing files]] as it 
 ## What is !mods_preload
 If you've set up [[Environment Setup#BBbuilder|BBbuilder]], you should notice that it adds a file for you in `scripts/!mods_preload/`. This is the folder in which mods are able to register with [[Introduction|Modern Hooks]], declare their dependencies, incompatibilities and load order relative to other mods.
 
-Your file in this folder should be very small and [[Best Practices#Main Mod File Name|have the same name as your mod zip file]]. All it needs to do is [[#Registering your mod|register with Modern Hooks]], [[Mod Object#Declaring Compatibility Data|declare requirements and incompatibilities]] and [[Mod Object#Queuing a Function|queue your mods main function]], your main function should be short and just [[Best Practices#include|::include]] files for your mod, which is where your actual logic should be. This allows for much better [[Best Practices#Mod Structure|mod structure]].
+Your file in this folder should be very small and [[Best Practices#Main Mod File Name|have the same name as your mod zip file]]. All it needs to do is [[#Registering your mod|register with Modern Hooks]], [[Mod Object#Requirement and Incompatibilities|declare requirements and incompatibilities]] and [[Mod Object#Queuing a Function|queue your mods main function]], your main function should be short and just [[Best Practices#include|::include]] files for your mod, which is where your actual logic should be. This allows for much better [[Best Practices#Mod Structure|mod structure]].
 
 ## Registering your mod
 ```squirrel

@@ -47,7 +47,7 @@ The `::include` function allows you to load additional script files outside of t
 #### Example
 We have a `/mod_example/` folder which contains the files `global_functions.nut` and `constants.nut`, as well another folder called `hooks/` which contains a number of files setting up [[Hooks||hooks]]. We'd like the `constants.nut` to be loaded first followed by `global_functions` and finally `hooks/`, but we don't care what order the hooks are loaded in relative to each other.
 
-In our main file's [[Queueing|queue]] function we would do the following
+In our main file's [[Queuing]] function we would do the following
 ```squirrel
 // inside queue function after registering with libraries like MSU
 ::include("mod_example/constants");
@@ -63,7 +63,7 @@ Your main mod file should declare a global table for your mod to use, with the k
 - Name: a friendly name displayed to users (string)
 - Version: a [SemVer](https://semver.org/) [[#Mod Version]] (string)
 
-It should then register with [[Introduction|Modern Hooks]] (or [modding script hooks](https://www.nexusmods.com/battlebrothers/mods/42) for older mods), and [[Queueing|queue]] the main mod function that will be executed for your mod. The first thing you should do when queuing is register with any libraries (like [[MSU]]) that you use. Finally, if your mod is any larger than one or two hooks, you should [[#include|::include]] files for your mod, and register and JS/CSS file your mod adds.
+It should then register with [[Introduction|Modern Hooks]] (or [modding script hooks](https://www.nexusmods.com/battlebrothers/mods/42) for older mods), and [[Queuing]] the main mod function that will be executed for your mod. The first thing you should do when queuing is register with any libraries (like [[MSU]]) that you use. Finally, if your mod is any larger than one or two hooks, you should [[#include|::include]] files for your mod, and register and JS/CSS file your mod adds.
 
 ### Example
 ```squirrel

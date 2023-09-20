@@ -1,26 +1,32 @@
 Sometimes when [[Basic Hooks|hooking]], you want to wrap a specific function for *all* descendants of a specific object, regardless of how many times they are defined in the descendants of that function.
 
-As an example let us take the `getBuyPrice` function of items. Let's say we'd like to double the buy price of all items, regardless of any other context. Without leaf hooks this would be very difficult to do, as this function is not only defined in `scripts/items/item`, but also has custom implementations in `scripts/items/loot/growth_pearls_item`, `scripts/items/accessory/sergeant_badge_item`, `scripts/items/loot/ancient_amber_item` and a multitude of other items. This would mean that we'd need to use a [[Basic Hooks#Wrapping Functions|wrapFunctions]] hook targeting each of those items in each of those cases. 
+As an example let us take the `getBuyPrice` function of items. Let's say we'd like to double the buy price of all items, regardless of any other context. Without leaf hooks this would be very difficult to do, as this function is not only defined in `scripts/items/item`, but also has custom implementations in `scripts/items/loot/growth_pearls_item`, `scripts/items/accessory/sergeant_badge_item`, `scripts/items/loot/ancient_amber_item` and a multitude of other items. This would mean that we'd need to use a basic hook targeting each of those custom implementation to achieve our goal.
 
 Fortunately, due to the fact that inheritance *clones* the parent prototype object during inheritance (rather than instantiation), we are able to wait until all inheritance is completed, and only then apply our 'leaf hooks' to the bb class as well as all descendants of the bb class we are targeting our hook at. This guarantees that our wrapper is applied exactly once to each descendant of the target class, and also that it applies *after* all other inheritance.
 
-To use this 'leaf hook' system, each of the hooking functions has a leaf style counterpart:
-- wrapLeafFunctions
-- wrapNativeEntityLeafFunctions
-- addLeafFunctions
-- setLeafFields
-- addLeafFields
+To use this 'leaf hook' system, we instead use the `leafHook` function in the same way we would the normal [[Basic Hooks|hook]] function:
 
-These act exactly the same as the [[Basic Hooks]], except that they are applied to all descendants of the target class (as well as the target class) after all inheritance. I actually don't see a use case for the functions other than `wrapLeafFunctions`, but they have been added for the sake of completeness and perhaps someone else will find some way to use them. I would not recommend using the other functions unless you *really* know what you're doing.
-
-Finally, to double the purchase price of all items, you would simply do:
+## Example
 ```squirrel
-::Hooks.wrapLeafFunctions("mod_my_cool_mod", "scripts/items/item" {
-	function getBuyPrice(_originalFunction)
-	{
-		return function() {
-			return _originalFunction() * 2;
-		}
+local mod = ::Hooks.register("mod_my_mod", "1.0.0", "My Cool Mod!");
+// first we must register our mod
+
+// it is always recommended to queue hooks
+// but for for this example we will avoid doing so
+// for the sake of simplicity
+mod.leafHook("scrippts/items/item", function(q){
+	// this is now executing once for item
+	// and every descendant of item
+	// but since this is done after inheritance takes place,
+	// we do not need to worry about hooking the same object
+	// multiple times
+
+	q.getBuyPrice = @(__original) function() {
+		return __original() * 2;
+		// we can perform this simple wrap which will guarantee
+		// that all items have their buy price doubled
+		// in all circumstances;
+		// of course you could add more complex logic here
 	}
 });
 ```
