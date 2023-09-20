@@ -7,7 +7,8 @@ this.Math.max(5, this.Math.min(95, toHit))
 to calculate the ceiling and floor for the chance to hit. So, if we were to replace the `::Math.max` function, and make it so that if the first parameter is a 5 we treat is as a 10, we would be able to change the minimum hit chance. We could do this relatively easily using a [[Basic Hooks#Wrapping Functions|wrap function]] hook
 ```squirrel
 <Mod>.hook("scripts/skills/skill", function(q){
-	q.attackEntity @(__original) function( _user, _targetEntity, _allowDiversion = true ) {
+	q.attackEntity @(__original) function( _user, _targetEntity, _allowDiversion = true )
+	{
 		local max = ::Math.max; // store the original function locally
 			::Math.max = function (_a, _b) { // replace with our wrapper
 				if (_a == 5) // if the first parameter is 5, we increase it to 10
