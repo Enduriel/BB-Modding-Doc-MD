@@ -73,7 +73,7 @@ It should then register with [[Introduction|Modern Hooks]] (or [modding script h
 	Version = "1.0.1-beta.1"
 }
 
-local mod = ::Hooks.register(::MyCoolMod.ID, ::MyCoolMod.Name, ::MyCoolMod.Version);
+local mod = ::Hooks.register(::MyCoolMod.ID, ::MyCoolMod.Version, ::MyCoolMod.Name);
 mod.require("mod_i_need >= 1.14.4", "mod_i_need_and_want_to_load_before");
 mod.conflictWith("mod_that_breaks_on_specific_version = 1.4.0");
 

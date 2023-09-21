@@ -160,7 +160,7 @@ The equivalent modern hooks mod would look something like
 	Version = "1.0.0" // SemVer no longer requires MSU
 };
 
-local mod = ::Hooks.register(::MyMod.ID, ::MyMod.Name, ::MyMod.Version);
+local mod = ::Hooks.register(::MyMod.ID, ::MyMod.Version, ::MyMod.Name);
 mod.require("mod_msu >= 1.0.0");
 mod.incompatibleWith("mod_legends");
 
