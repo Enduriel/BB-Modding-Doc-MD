@@ -14,14 +14,14 @@ All of the 'raw' hooks in modding script hooks have been turned into a *single* 
 - `::mod_hookNewObjectOnce`
 - `::mod_hookBaseClass`
 
-we now only have [[Raw Hooks|<Mod>.rawHook]], which is actually a drop in replacement for `::mod_hookExactClass` (and actually patches hookExactClass to redirect to `<Mod>.rawHook`), except it is able to apply to ALL Battle Brothers Classes, with no exceptions. However, we should instead use the new [[Basic Hooks|<Mod>.hook]] as it performs additional error validation and fixes a serious bug in the other hooks.
+we now only have [[Raw Hooks|Mod.rawHook]], which is actually a drop in replacement for `::mod_hookExactClass` (and actually patches hookExactClass to redirect to `<Mod>.rawHook`), except it is able to apply to ALL Battle Brothers Classes, with no exceptions. However, we should instead use the new [[Basic Hooks|Mod.hook]] as it performs additional error validation and fixes a serious bug in the other hooks.
 
 ### Hooking Descendants
 ***IMPORTANT NOTE***
 ```
 This is an example only you shouldn't use Modern Hooks like this, refer to the section on the new Basic Hooks below
 ```
-Additionally, `mod_hookDescendants` is superseded by [[Raw Hooks|<Mod>.rawLeafHook]]. The distinction is easiest to explain with an example. Let's hook `scripts/items/item` to add a new function `foo` to it which prints `foo` to the log, then let's use hooDescendants to wrap that call and print `bar`.
+Additionally, `mod_hookDescendants` is superseded by [[Raw Hooks|Mod.rawLeafHook]]. The distinction is easiest to explain with an example. Let's hook `scripts/items/item` to add a new function `foo` to it which prints `foo` to the log, then let's use hooDescendants to wrap that call and print `bar`.
 ```squirrel
 ::mods_hookBaseClass("items/item", function(o) {
 	o.foo <- function() {
