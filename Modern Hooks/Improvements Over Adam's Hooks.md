@@ -115,7 +115,7 @@ A small modern mod_hooks mod might look something like
 			return addFlagsToUIData(_entity, _activeEntity, _target);
 		}
 	});
-	::mods_hookDescendants("items/item", function(o){
+	::mods_hookDescendants("items/item", function(o) {
 		// double the buy price of items
 		// the below code wouldn't work as expected and would have a variety of issues,
 		// but the full version is really convoluted so lets pretend that just
@@ -149,6 +149,8 @@ A small modern mod_hooks mod might look something like
 			return onUpdateProperties(_properties);
 		}
 	});
+	::mods_registerCSS("mymod/myfile.css");
+	::mods_registerJS("mymod/myfile.js");
 });
 ```
 
@@ -177,18 +179,27 @@ mod.queue(">mod_msu", "<mod_swifter", function(){
 			return _originalFunction(_entity, _activeEntity, _target);
 		}
 	});
-	mod.leafHook("scripts/items/item", function(q){
+	mod.leafHook("scripts/items/item", function(q) {
 		q.getBuyPrice = @(__original) function()
 		{
 			return __original() * 2;
 		}
 	});
-	mod.hook("scripts/items/weapons/named/named_shamshir", function(q){
+	mod.hook("scripts/items/weapons/named/named_shamshir", function(q) {
 		q.onUpdateProperties = @(__original) function( _properties )
 		{
 			_properties.Stamina += 10;
 			return __original(_properties);
 		}
 	});
+	::Hooks.registerCSS("ui/mods/mymod/myfile.css");
+	::Hooks.registerLateJS("ui/mods/mymod/myfile.js");
+	// OR
+	::Hooks.registerJS("ui/mods/mymod/myfile.js");
+	// registerJS is better and can be used in the fast majority of cases
+	// but registerLateJS is technically 1:1 in behavior to ::mods_registerJS
+	// and if certain patches were made to work around some of the 
+	// strangeness of ::mods_registerJS those are not required in
+	// registerJS and therefore should be removed before converting
 });
 ```
