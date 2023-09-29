@@ -5,10 +5,8 @@ This video is starting to show its age a bit and you should do the following thi
 - Rather than downloading Adam's tools or creating your own mod folder manually, you should set up [Taro's BBBuilder](https://github.com/TaroEld/BBbuilder), an outstanding command line tool, by following the readme at the link. It also has support for Visual Studio Code. If you do not do this you are massively wasting your time and will struggle to follow the rest of this page.
 
 ## BBbuilder
-[Github Repository](https://github.com/TaroEld/BBbuilder)
-[Latest Release](https://github.com/TaroEld/BBbuilder/releases/latest)
 
-BBbuilder's GitHub documentation is lacking, but its commands are described very well internally, run `.\BBbuilder.exe` without any additional arguments to get a good breakdown of the functions.
+To use BBbuilder, you must first download a [release build](https://github.com/TaroEld/BBbuilder/releases/latest) from the [GitHub](https://github.com/TaroEld/BBbuilder), then unzip the `BBbuilder.zip` into a permanent folder. Finally, you should open up a command prompt or powershell window, [navigate](https://www.wikihow.com/Change-Directories-in-Command-Prompt) to the folder you unzipped BBbuilder into, and finally run `.\BBbuilder.exe`without any additional arguments to get a good breakdown of its capabilities.
 
 Before beginning modding, I would strongly recommend downloading BBbuilder, creating a mod folder and setting up BBbuilder using 
 ```powershell
