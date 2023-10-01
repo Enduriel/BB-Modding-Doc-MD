@@ -5,6 +5,7 @@ When a BB Class is instantiated, it
 2) Clones the m table of the prototype object it is an instance of
 3) Repeats steps 1-2 for all its [[#Inheritance|ancestors]]
 4) Executes the `create` function
+
 in some special cases, such as if the BB Class is instantiated by the backend (this mostly happens to world and tile entities) the following then also happens.
 5) Some special native functions are added to the table.
 6) Executes the `onInit` function.
