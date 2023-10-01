@@ -21,7 +21,7 @@ we now only have [[Raw Hooks|Mod.rawHook]], which is actually a drop in replacem
 ```
 This is an example only you shouldn't use Modern Hooks like this, refer to the section on the new Basic Hooks below
 ```
-Additionally, `mod_hookDescendants` is superseded by [[Raw Hooks|Mod.rawLeafHook]]. The distinction is easiest to explain with an example. Let's hook `scripts/items/item` to add a new function `foo` to it which prints `foo` to the log, then let's use hooDescendants to wrap that call and print `bar`.
+Additionally, `mod_hookDescendants` is superseded by [[Raw Hooks|Mod.rawLeafHook]]. The distinction is easiest to explain with an example. Let's hook `scripts/items/item` to add a new function `foo` to it which prints `foo` to the log, then let's use hookDescendants to wrap that call and print `bar`.
 ```squirrel
 ::mods_hookBaseClass("items/item", function(o) {
 	o.foo <- function() {
@@ -55,7 +55,7 @@ Now, how many items would `bar` print to the log if you called `foo()` on a give
 This would print `bar` exactly once when calling `foo()` on any item, including item itself.
 
 ### New Basic Hooks
-Instead of using raw style hooks, when using Modern Hooks you should instead be using [[Basic Hooks]] for 99%+ of your hooks. These also:
+Rather than using raw style hooks, when using Modern Hooks you should use [[Basic Hooks]] for 99%+ of your hooks. These also:
 - Warn if a mod tries to add a function/field to a class which already exists in the class or an ancestor
 - Warn if a mod tries to set a field or wrap a function which don't exist 
 - Warn if a mod wraps a function with a different number of parameters than the function the wrapper returns.
@@ -65,7 +65,7 @@ Instead of using raw style hooks, when using Modern Hooks you should instead be 
 ## UI/JavaScript
 
 ### EarlyJS
-Adam's Hooks run the JS files registed with it very late, only after ingame screens are instantiated and the main menu is shown, this can be problematic when trying to hook the main menu or functions that are called during any screen's instantiation, the most common example being `createModules` and `registerDatasourceListener`. In Adam's hooks these cases require special handling where you directly modify the screens rather than hooking those functions.
+Adam's Hooks run the JS files registered with it very late, only after ingame screens are instantiated and the main menu is shown, this can be problematic when trying to hook the main menu or functions that are called during any screen's instantiation, the most common example being `createModules` and `registerDatasourceListener`. In Adam's hooks these cases require special handling where you directly modify the screens rather than hooking those functions.
 
 Modern Hooks instead run [[Modern Hooks/UI Modding#registerJS|registered JS]] and [[Modern Hooks/UI Modding#registerCSS|CSS]] files after all the vanilla files are read and screens are defined, but *before* screens are instantiated. This means that it is possible to hook all functions normally, and even the screens themselves directly. In some edge cases you might still want to run JS code after screens are instantiated, in which case Modern Hooks provides [[Modern Hooks/UI Modding#registerLateJS|registerLateJS]] to achieve that goal.
 
@@ -92,7 +92,7 @@ The [[Queuing#AfterHooks|AfterHooks QueueBucket]] allows you to queue code to ru
 TODO
 
 ## Migration Example
-A small modern mod_hooks mod might look something like
+A small mod_hooks mod might look something like
 ```squirrel
 ::MyMod <- {
 	ID = "mod_my_mod",
