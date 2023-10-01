@@ -89,7 +89,7 @@ Modern Hooks uses a new queuing algorithm which allows it to handle situations l
 #### AfterHooks
 The [[Queuing#AfterHooks|AfterHooks QueueBucket]] allows you to queue code to run after all hooks have completed, this is important as you should not be instantiating squirrel or native objects before all hooks and normal functions have run, as if you do they will fail. This bucket allows you to easily do that.
 #### FirstWorldInit
-TODO
+The [[Queuing#FirstWorldInit|FirstWorldInit Queuebucket]] allows you to queue code to run after the world_state `onInitUI` has run for the first time and therefore allows you to instantiate bb classes (such as skills) that require certain global objects to exist.
 
 ## Migration Example
 A small mod_hooks mod might look something like
