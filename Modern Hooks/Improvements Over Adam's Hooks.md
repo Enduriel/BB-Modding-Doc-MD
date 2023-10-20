@@ -21,7 +21,7 @@ we now only have [[Raw Hooks|Mod.rawHook]], which is actually a drop in replacem
 ```
 This is an example only you shouldn't use Modern Hooks like this, refer to the section on the new Basic Hooks below
 ```
-Additionally, `mod_hookDescendants` is superseded by [[Raw Hooks|Mod.rawLeafHook]]. The distinction is easiest to explain with an example. Let's hook `scripts/items/item` to add a new function `foo` to it which prints `foo` to the log, then let's use hookDescendants to wrap that call and print `bar`.
+Additionally, `mod_hookDescendants` is superseded by [[Raw Hooks|Mod.rawHookTree]]. The distinction is easiest to explain with an example. Let's hook `scripts/items/item` to add a new function `foo` to it which prints `foo` to the log, then let's use hookDescendants to wrap that call and print `bar`.
 ```squirrel
 ::mods_hookBaseClass("items/item", function(o) {
 	o.foo <- function() {
@@ -36,7 +36,7 @@ Additionally, `mod_hookDescendants` is superseded by [[Raw Hooks|Mod.rawLeafHook
 	}
 });
 ```
-Now, how many items would `bar` print to the log if you called `foo()` on a given item? In the example above it will print once for every layer of inheritance between `scripts/items/item` and the item you are calling `foo()` on. For example, for `scripts/items/weapons/weapon` `bar` would print once, for `scripts/items/weapons/sword` it would print twice. If you instantiated `scripts/items/item` and called `foo()` on it, `bar` would never print to the log. This is confusing, usually drains performance, and in my experience has never once been a useful feature, in comparison `::Hooks.rawLeafHook` prints would print `bar` exactly once for any descendant of item and item itself. Here is the same code using modern hooks:
+Now, how many items would `bar` print to the log if you called `foo()` on a given item? In the example above it will print once for every layer of inheritance between `scripts/items/item` and the item you are calling `foo()` on. For example, for `scripts/items/weapons/weapon` `bar` would print once, for `scripts/items/weapons/sword` it would print twice. If you instantiated `scripts/items/item` and called `foo()` on it, `bar` would never print to the log. This is confusing, usually drains performance, and in my experience has never once been a useful feature, in comparison `::Hooks.rawHookTree` prints would print `bar` exactly once for any descendant of item and item itself. Here is the same code using modern hooks:
 ```squirrel
 // this is an example only you should almost never be using raw hooks in modern hooks
 <Mod>.rawHook("scripts/items/item", function(p){
@@ -44,7 +44,7 @@ Now, how many items would `bar` print to the log if you called `foo()` on a give
 		::logInfo("foo");
 	}
 });
-<Mod>.rawLeafHook("scripts/items/item", function(p){
+<Mod>.rawHookTree("scripts/items/item", function(p){
 	local foo = p.foo;
 	p.foo = function() {
 		foo();
@@ -179,7 +179,7 @@ mod.queue(">mod_msu", "<mod_swifter", function(){
 			return _originalFunction(_entity, _activeEntity, _target);
 		}
 	});
-	mod.leafHook("scripts/items/item", function(q) {
+	mod.hookTree("scripts/items/item", function(q) {
 		q.getBuyPrice = @(__original) function()
 		{
 			return __original() * 2;
