@@ -164,7 +164,7 @@ The equivalent modern hooks mod would look something like
 
 local mod = ::Hooks.register(::MyMod.ID, ::MyMod.Version, ::MyMod.Name);
 mod.require("mod_msu >= 1.0.0");
-mod.incompatibleWith("mod_legends");
+mod.conflictsWith("mod_legends");
 
 mod.queue(">mod_msu", "<mod_swifter", function(){
 	mod.hook("scripts/ui/global/data_helper", function(q) {
