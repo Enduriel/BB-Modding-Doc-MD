@@ -50,6 +50,12 @@ mod.hook("scrippts/items/item", function(q){
 		// and 'create called!' will be printed to log
 	}
 
+	q.foo = @() function() {
+		// if a function (foo in this case) already exists in item
+		// and we'd like to overwrite, we can just omit the __original
+		// parameter and leave @() empty to signal we are overwriting
+	}
+
 	q.m.Name = "DEFAULT_NAME";
 	// we can also set fields using this simple syntax
 	
