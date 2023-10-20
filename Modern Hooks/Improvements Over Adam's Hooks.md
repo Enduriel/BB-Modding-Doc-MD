@@ -196,7 +196,7 @@ mod.queue(">mod_msu", "<mod_swifter", function(){
 	::Hooks.registerLateJS("ui/mods/mymod/myfile.js");
 	// OR
 	::Hooks.registerJS("ui/mods/mymod/myfile.js");
-	// registerJS is better and can be used in the fast majority of cases
+	// registerJS is better and can be used in the vast majority of cases
 	// but registerLateJS is technically 1:1 in behavior to ::mods_registerJS
 	// and if certain patches were made to work around some of the 
 	// strangeness of ::mods_registerJS those are not required in
