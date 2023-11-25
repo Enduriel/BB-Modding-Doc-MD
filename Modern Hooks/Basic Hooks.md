@@ -7,7 +7,7 @@ Hooks are targeted at specific [[Battle Brothers Classes]] and allow you to add 
 // _function is a function
 ```
 `_src` is the file path of the [[Battle Brothers Class|BB Class]] we'd like to hook.
-`_function` is the function that will get executed by the hook, it must have a single parameter (called `q` by convention).
+`_function` is the function that will get executed by the hook, it must have a single parameter: `q`.
 
 This makes `_function` get called with a special object which allows for the addition and wrapping of functions, and addition and setting of fields. This can be done as though the object passed to `_function` was a normal table except in the case of wrapping functions, which requires the special syntax as seen in the example below.
 
@@ -19,7 +19,7 @@ local mod = ::Hooks.register("mod_my_mod", "1.0.0", "My Cool Mod!");
 // it is always recommended to queue hooks
 // but for for this example we will avoid doing so
 // for the sake of simplicity
-mod.hook("scrippts/items/item", function(q){
+mod.hook("scrippts/items/item", function(q) {
 	// here we have targeted the base item bb class
 	// we are now inside of the function that will get executed
 	// with the special q object which allows us to modify
@@ -48,6 +48,12 @@ mod.hook("scrippts/items/item", function(q){
 		::logInfo("create called!")
 		// now every time an item is created both 'foo!'
 		// and 'create called!' will be printed to log
+	}
+
+	q.addSprite = @(__native) function() {
+		// if you're looking to hook a function only added by C++ functions,
+		// you must instead use the __native parameter,
+		// this will automatically create a realtime hook for you in onInit
 	}
 
 	q.foo = @() function() {

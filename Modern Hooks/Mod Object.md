@@ -7,8 +7,7 @@ In Modern Hooks, mod compatibility information is separate from queuing informat
 <Mod>.require(...)
 // ... is an arbitrary number of string parameters
 ```
-
-Each parameter is a string in the form `modID` `operator` `version` `(Friendly Mod Name)`, with everything except the modID being optional, and operator and version being required together.
+Each parameter is a string in the form `modID operator version (Friendly Mod Name) [Compatibility Explanation]`, with everything except the modID being optional, and operator and version being required together.
 
 Declares requirements for your mod. The version part of the string accepts a [semver](https://semver.org) or float version prefixed with an operator that describes which versions are required. The acceptable operators are
 
@@ -22,11 +21,12 @@ Declares requirements for your mod. The version part of the string accepts a [se
 ### Example
 ```squirrel
 local mod = ::Hooks.register("mod_my_mod", "1.0.0", "My Cool Mod");
-mod.require("mod_msu >= 1.2.0 (Modding Standards & Utilities)", "mod_EIMO", "mod_reforged < 0.3.0 (Reforged)");
+mod.require("mod_msu >= 1.2.0 (Modding Standards & Utilities)", "mod_EIMO [Because it's super great]", "mod_reforged < 0.3.0 (Reforged)");
 // we require MSU versions greater than or equal to 1.2.0
 // and if it is missing an error will print with the full
 // Modding Standards & Utilities name
-// we require any version of EIMO
+// we require any version of EIMO, if it missing 
+// "Because it's super great" will be printed to the user
 // we require versions of reforged smaller 0.3.0
 // and in case of an error the full 'Reforged' name will be used
 ```

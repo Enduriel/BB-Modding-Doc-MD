@@ -1,4 +1,4 @@
-Sometimes when [[Basic Hooks|hooking]], you want to wrap a specific function for *all* descendants of a specific object, regardless of how many times they are defined in the descendants of that function.
+Sometimes when [[Basic Hooks|hooking]], you want to wrap a specific function for *all* descendants of a specific object, regardless of how many times they are defined in the descendants of that function. These hooks work the same as normal hooks, except their changes are *not* inherited, instead they are separately applied to the target and each descendant of the target.
 
 As an example let us take the `getBuyPrice` function of items. Let's say we'd like to double the buy price of all items, regardless of any other context. Without tree hooks this would be very difficult to do, as this function is not only defined in `scripts/items/item`, but also has custom implementations in `scripts/items/loot/growth_pearls_item`, `scripts/items/accessory/sergeant_badge_item`, `scripts/items/loot/ancient_amber_item` and a multitude of other items. This would mean that we'd need to use a basic hook targeting each of those custom implementation to achieve our goal.
 
