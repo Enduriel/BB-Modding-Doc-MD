@@ -100,7 +100,7 @@ A small mod_hooks mod might look something like
 	Version = "1.0.0" // Assuming MSU is required and loaded
 };
 ::mods_register(::MyMod.ID, ::MyMod.Name, ::MyMod.Version);
-::mods_queue(::MyMod.ID, "mod_msu(>=1.0.0), !mod_legends", function() {
+::mods_queue(::MyMod.ID, "mod_msu(>=1.0.0), !mod_bad_mod", function() {
 	::mods_hookNewObject("ui/global/data_helper", function(o){
 		// add a function foo that returns foo
 		o.foo <- function()
@@ -164,7 +164,7 @@ The equivalent modern hooks mod would look something like
 
 local mod = ::Hooks.register(::MyMod.ID, ::MyMod.Version, ::MyMod.Name);
 mod.require("mod_msu >= 1.0.0");
-mod.conflictsWith("mod_legends");
+mod.conflictsWith("mod_bad_mod");
 
 mod.queue(">mod_msu", "<mod_swifter", function(){
 	mod.hook("scripts/ui/global/data_helper", function(q) {
