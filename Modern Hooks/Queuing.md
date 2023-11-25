@@ -32,3 +32,13 @@ is a special bucket that is run *after* hooks are executed, this is intended to 
 ::Hooks.Queuebucket.FirstWorldInit
 ```
 is a special bucket run the first time a player loads or starts a game. This is intended to allow you to initialize squirrel classes which may require things like `::World.Assets` to exist.
+
+### Which buckets should I use?
+If you're a bit confused about all these buckets, that's honestly pretty understandable. The most important ones that you might genuinely end up using are `Normal`, `AfterHooks` and `FirstWorldInit`. `Normal` is where your functions get queued by default so don't worry about that.
+
+As for [[#AfterHooks]] and [[#FirstWorldInit]], you can read the relevant sections, but the simple version is that if you are instantiating global [[Battle Brothers Class|BB Classes]] or [Squirrel Classes](https://developer.electricimp.com/squirrel/squirrel-guide/classes) for your mod, you should be doing that in a function in `FirstWorldInit`, and if that doesn't work for you due to your need to instantiate things before the world is loaded (mainly to modify the main menu), then you should use `AfterHooks`.
+
+The other Buckets are there mostly for libraries or large mods which change core functionality in a serious way and *need* ***specific hooks*** to go first/last. You should not be queueing all your hooks in these buckets. These hooks should generally aim to not change core functionality of the function. My personal recommendation is the following:
+- `Early`/`Late` should be used by large mods  (Legends, Reforged, PTR, etc) to add specific ***wrappers without modifying core functionality***
+- `VeryEarly`/`VeryLate` should be used by mod libraries (MSU and other stuff like it) to add specific ***wrappers without modifying core functionality***
+- `First`/`Last` should be ***reserved for Modern Hooks*** and anyone who wishes to directly mess with its behavior. You should *really* know what you're doing if you touch these.
