@@ -76,6 +76,16 @@ mod.hook("scrippts/items/item", function(q) {
 
 	q.contains("getName") // true
 	q.m.contains("NotPresentMember") // false
+
+	// you can also delete existing slots using delete
+	delete q.MyMod_foo;
+
+	// and iterate over functions or fields as normal
+	foreach (funcName, func in q)
+		::logInfo(format("Function Name: %s, Function Address: %s", funcName, func.tostring()))
+
+	foreach (fieldName, field in q.m)
+		::logInfo(format("Field Name: %s, Field Value: %s", fieldName, field + ""))
 });
 ```
 
