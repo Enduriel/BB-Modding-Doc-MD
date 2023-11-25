@@ -1,1 +1,4 @@
-asdf
+- [ElectricImp's Squirrel Reference](https://developer.electricimp.com/squirrel)
+- [BB Modding Discord](https://discord.gg/T7MbGrwfW2)
+	- [BB Modding Discord Resources](https://discord.com/channels/965324395851694140/965324982882283550)
+- [Official Squirrel Documentation](http://www.squirrel-lang.org/doc/squirrel3.pdf)
