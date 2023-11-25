@@ -26,7 +26,7 @@ To use buckets you must [[Mod Object#Queuing a Function|queue your functions]] a
 ```squirrel
 ::Hooks.QueueBucket.AfterHooks
 ```
-is a special bucket that is run *after* hooks are executed, this is intended to give your mod a place to initialize [Squirrel Classes](TODO) and [Battle Brothers Classes](TODO) while allowing them to still be hooked. This is important because if you initialize a Squirrel Class it can no longer be hooked at all, while if you initialize a BB Class and it is later hooked, the hooks will not apply to your object.
+is a special bucket that is run *after* hooks are executed, this is intended to give your mod a place to initialize [Squirrel Classes](https://developer.electricimp.com/squirrel/squirrel-guide/classes) and [Battle Brothers Classes](https://developer.electricimp.com/squirrel/squirrel-guide/classes) while allowing them to still be hooked. This is important because if you initialize a Squirrel Class it can no longer be hooked at all, while if you initialize a BB Class and it is later hooked, the hooks will not apply to your object.
 ### FirstWorldInit
 ```squirrel
 ::Hooks.Queuebucket.FirstWorldInit

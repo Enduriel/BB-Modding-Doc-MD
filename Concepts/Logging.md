@@ -6,7 +6,7 @@ Battle Brothers creates a log.html file (which should be opened using a browser)
 
 All of the below write to log.
 ## Squirrel
-There are multiple functions to print to console in squirrel, they are only differentiated by the color they output and the short descriptor to the left of the text in the log. They each accept a [Squirrel String](TODO) as their parameter Their individual use is self-explanatory from their name:
+There are multiple functions to print to console in squirrel, they are only differentiated by the color they output and the short descriptor to the left of the text in the log. They each accept a [Squirrel String](https://developer.electricimp.com/squirrel/string) as their parameter Their individual use is self-explanatory from their name:
 
 - `::logInfo()` blue
 - `::logDebug()` yellow

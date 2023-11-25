@@ -1,6 +1,6 @@
 ### Links:
-Github
-NexusMods
+[Github](https://github.com/MSUTeam/Modern-Hooks)
+[NexusMods](https://www.nexusmods.com/battlebrothers/mods/685)
 
 [[Hooks]] allow us to modify [[Battle Brothers Class|Battle Brothers Classes]] directly, this happens during initialization time, while the game is booting up and reading all of the game scripts and before the main menu screen is shown. This allows us to 
 - [[Basic Hooks#Adding Functions|add functions]]
