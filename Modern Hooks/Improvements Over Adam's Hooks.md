@@ -176,7 +176,7 @@ mod.queue(">mod_msu", "<mod_swifter", function(){
 		q.addFlagsToUIData = @(__original) function( _entity, _activeEntity, _target )
 		{
 			::logInfo("addFlagsToUIData");
-			return _originalFunction(_entity, _activeEntity, _target);
+			return __original(_entity, _activeEntity, _target);
 		}
 	});
 	mod.hookTree("scripts/items/item", function(q) {
