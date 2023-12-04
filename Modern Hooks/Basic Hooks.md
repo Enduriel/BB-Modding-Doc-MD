@@ -91,3 +91,36 @@ mod.hook("scrippts/items/item", function(q) {
 
 ## Why Basic Hooks
 Basic hooks are superior to raw hooks in that they perform additional error validation and fix a [bug with all prototypal hooks](https://discord.com/channels/965324395851694140/1052648104815513670). This makes it much easier to debug future issues and if other errors arise with hooks these can be fixed in basic hooks. I will also be looking to extend the functionality of basic hooks as the need arises.
+
+## Why the @
+You may have noticed that the way you set an existing function to a new function is strange in Modern Hooks, instead of directly setting the function there's this `@()` or `@(__original)` in between the `=` and the function definition.
+This may seem a bit mystical, but it is actually just a [lambda function](https://developer.electricimp.com/squirrel/squirrel-guide/functions#lambda-functions). Therefore 
+```squirrel
+q.foo = @(__original) function() {
+	__original()
+	// do something
+}```
+is equivalent to
+```squirrel
+q.foo = function(__original) {
+	return function() {
+		__original()
+		// do something
+	}
+}
+```
+So the lambda there saves us a couple lines and a level of indentation, but this doesn't really answer why we need a function that creates our function in the first place. To explain that, it helps to first look at the way this would have been done before (and is still how you would have to do this in [[Raw Hooks]]):
+```squirrel
+local oldfoo = o.foo;
+o.foo = function(){
+	oldfoo();
+	// do something
+}
+```
+There are a few problems with the above approach.
+- The local variable doesn't have a defined name which can cause issues when collaborating with others with a different style (`foo` vs `oldFoo` vs `ogFoo` vs `originalFoo` vs etc).
+ - If this is done during a hook which runs while the game is loading files (anything except `hookNewObject`), this will error if `foo` only exists in an ancestor and not in the target class.
+ - If you use something more advanced to get around the previous issue (for example `::mods_getMember`), your code may have a [very strange bug](https://discord.com/channels/965324395851694140/1052648104815513670) which occurs in some edge cases.
+ - If the function doesn't exist in `o`, (but does in an ancestor) this will error, which can be annoying.
+
+By using the wrapper, we are able to get around all of the above issues, your code only receives the original function, regardless of whether it's in this class or an ancestor. If it is an ancestor which would cause the aforementioned bug, a patch is automatically applied to `__original` which will fix it.
