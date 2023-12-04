@@ -99,7 +99,8 @@ This may seem a bit mystical, but it is actually just a [lambda function](https:
 q.foo = @(__original) function() {
 	__original()
 	// do something
-}```
+}
+```
 is equivalent to
 ```squirrel
 q.foo = function(__original) {
