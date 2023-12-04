@@ -120,8 +120,8 @@ o.foo = function(){
 ```
 There are a few problems with the above approach.
 - The local variable doesn't have a defined name which can cause issues when collaborating with others with a different style (`foo` vs `oldFoo` vs `ogFoo` vs `originalFoo` vs etc).
- - If this is done during a hook which runs while the game is loading files (anything except `hookNewObject`), this will error if `foo` only exists in an ancestor and not in the target class.
+ - If this is done during a hook which runs while the game is loading files (anything except `hookNewObject`), this will error if `foo` only exists in an grandparent or further ancestor and not in the target class or parent class.
  - If you use something more advanced to get around the previous issue (for example `::mods_getMember`), your code may have a [very strange bug](https://discord.com/channels/965324395851694140/1052648104815513670) which occurs in some edge cases.
- - If the function doesn't exist in `o`, (but does in an ancestor) this will error, which can be annoying.
+ - Even if you try to overwrite the function entirely, and therefore skip the first line (or if the function exists in the parent), if `foo` doesn't exist in your target class, this will error.
 
 By using the wrapper, we are able to get around all of the above issues, your code only receives the original function, regardless of whether it's in this class or an ancestor. If it is an ancestor which would cause the aforementioned bug, a patch is automatically applied to `__original` which will fix it.
