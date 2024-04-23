@@ -14,7 +14,7 @@ local mod = ::Hooks.register("mod_my_mod", "1.0.0", "My Cool Mod!");
 // it is always recommended to queue hooks
 // but for for this example we will avoid doing so
 // for the sake of simplicity
-mod.HookTree("scrippts/items/item", function(q){
+mod.hookTree("scripts/items/item", function(q){
 	// this is now executing once for item
 	// and every descendant of item
 	// but since this is done after inheritance takes place,
