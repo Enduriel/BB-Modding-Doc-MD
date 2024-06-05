@@ -37,7 +37,7 @@ mod.require("mod_msu >= 1.2.0 (Modding Standards & Utilities)", "mod_EIMO [Becau
 // ... is an arbitrary number of string parameters 
 ```
 
-Each parameter is a string in the form `modID` `operator` `version` `(Friendly Mod Name)`, with everything except the modID being optional, and operator and version being required together.
+Each parameter is a string in the form `modID` `operator` `version` `(Friendly Mod Name)` `[Reason for Conflict]`, with everything except the modID being optional, and operator and version being required together.
 
 Declares incompatibilities for your mod. The version part of the string accepts a [semver](https://semver.org) or float version prefixed with an operator that describes which versions are required. The acceptable operators are
 
