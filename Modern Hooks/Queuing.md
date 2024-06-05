@@ -7,17 +7,19 @@ Additionally, Compatibility Data (requirements and incompatibilities) is separat
 
 
 ## Buckets
-Buckets are used to [[Mod Object#Queuing a Function|queue functions]] separately from the normal flow, this is an advanced modding technique that should probably only be used if you're making a library or large overhaul. Sometimes you'd like to queue a specific part of your (or your entire) mod before or after all normal mod hooks. With the basic queuing system this is impossible, which is where buckets come in. 
+Buckets are used to [[Mod Object#Queuing a Function|queue functions]] separately from the normal flow, this is an advanced modding technique that should probably only be used if you're making a library or large overhaul. Sometimes you'd like to queue a specific part of your (or your entire) mod before or after all normal mod hooks. With the basic queuing system this is impossible, which is where buckets come in.
+
+You should not be using a bucket unless you believe it's necessary for consistent compatibility with other mods, in the overwhelming majority of cases queubuckets are not necesssary.
 
 In principle, buckets are just a way to group functions that should be queued together. By default, all functions are in the `::Hooks.QueueBucket.Normal` bucket. There are currently 7 normal Buckets:
 ```squirrel
-::Hooks.QueueBucket.First
-::Hooks.QueueBucket.VeryEarly
-::Hooks.QueueBucket.Early
-::Hooks.QueueBucket.Normal
-::Hooks.QueueBucket.Late
-::Hooks.QueueBucket.VeryLate
-::Hooks.QueueBucket.Last
+::Hooks.QueueBucket.First // Reserved for Modern Hooks
+::Hooks.QueueBucket.VeryEarly // Generally for Frameworks
+::Hooks.QueueBucket.Early // Generally for individual mods
+::Hooks.QueueBucket.Normal // The default and strongly recommended bucket
+::Hooks.QueueBucket.Late // Generally for individual mods
+::Hooks.QueueBucket.VeryLate // Generally for Libaries
+::Hooks.QueueBucket.Last // Reserved for Modern Hooks
 ```
 with all the functions in a bucket lower on the list being sorted and executed after those in a bucket higher on the list.
 
